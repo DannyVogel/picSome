@@ -1,5 +1,6 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import { Context } from '../context/Context'
+import useHover from '../utils/useHover'
 
 interface Props {
     className: string;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 function Image({className, img}: Props) {
-    const [hovered, setHovered] = useState<boolean>(false)
+    const [hovered, ref] = useHover()
     const {toggleFavorite, cartItems, addToCart, removeFromCart} = useContext(Context)
     
     const heartIconClass = img.isFavorite ? 'ri-heart-fill' : hovered && 'ri-heart-line'
@@ -28,8 +29,7 @@ function Image({className, img}: Props) {
     return (
         <div 
             className={`${className} image-container`}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            ref={ref}
         >
             <img src={img.url} className="image-grid"/>
             <i className={`${heartIconClass} favorite`} onClick={() => toggleFavorite(img.id)}></i> 
